@@ -2,10 +2,10 @@
     <TheHeader/>
     <div class="container-fuild">
       <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-3 d-none d-sm-flex">
             SLIDEBAR
         </div>
-        <div class="col-sm-9">
+        <div class="col-12 col-sm-9">
             <router-view></router-view>
 
         </div>
