@@ -1,10 +1,10 @@
 <template>
     <div class="container-fuild">
-        <div class="row text-while " style="background-color:#0c713d;padding:1rem;">
+        <div class="row text-info  " style="background-color:#0c713d;padding:1rem;">
 
          <div class="col-1 d-flex d-sm-none align-items-center justify-content-center">
 
-            <span @click="showDrawer();">X</span>
+            <span @click="showDrawer();"><MenuOutlined /></span>
 
          </div>
        <div class="col-10 col-sm-9 d-flex  align-items-center justify-content-center justify-content-sm-start">
@@ -19,7 +19,7 @@
 
          <div class="col-1 d-flex d-sm-none align-items-center justify-content-center">
 
-            <span @click="showDrawerUser()">X</span>
+            <span @click="showDrawerUser()"><UserOutlined /></span>
 
          </div>
 
@@ -34,9 +34,7 @@
     placement="left"
    
   >
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
+ <TheMenu/>
   </a-drawer>
 
   <a-drawer
@@ -55,7 +53,12 @@
 
 </template>
 <script setup>
-import { ref } from 'vue';
+
+import { ref , defineComponent } from 'vue';
+import TheMenu from './TheMenu.vue';
+import {  MenuOutlined ,UserOutlined
+      } from '@ant-design/icons-vue';
+
 const open = ref(false);
 const open_user = ref(false);
 const afterOpenChange = bool => {
@@ -67,4 +70,6 @@ const showDrawer = () => {
 const showDrawerUser = () => {
   open_user.value = true;
 };
+
+ 
 </script>
