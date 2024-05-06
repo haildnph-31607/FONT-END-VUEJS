@@ -1,5 +1,8 @@
 import { createApp } from "vue";
 import { createPinia } from 'pinia'
+import axios from "axios";
+
+window.axios = axios;
 import "../node_modules/bootstrap/dist/css/bootstrap-grid.min.css";
 import "../node_modules/bootstrap/dist/css/bootstrap-utilities.min.css";
 import { Menu,
