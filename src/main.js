@@ -1,6 +1,8 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import axios from "axios";
+console.log('%c Dừng Lại ???? ','color:red;font-size:50px;');
+console.log('%c Đây là project của Le Duc Ngoc Hai ','color:red;font-size:30px;');
 
 window.axios = axios;
 import "../node_modules/bootstrap/dist/css/bootstrap-grid.min.css";

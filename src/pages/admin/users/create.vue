@@ -34,8 +34,9 @@
                         show-search
                         placeholder="Tình Trạng"
                         style="width: 100%"
-                        :options="[]"
-                        :filter-option="[]"
+                        :options="status_user"
+                        allow-clear
+                        :filter-option="filterOption"
                       
                       ></a-select>
                     </div>
@@ -106,8 +107,9 @@
                         show-search
                         placeholder="Phòng Ban"
                         style="width: 100%"
-                        :options="[]"
-                        :filter-option="[]"
+                        :options="departments"
+                        allow-clear
+                        :filter-option="filterOption"
                       
                       ></a-select>
                     </div>
@@ -150,8 +152,10 @@
         </div>
         <div class="row">
             <div class="col-12 d-grid d-sm-flex justify-content-sm-end mx-auto">
-                <a-button class="me-sm-2">
-                    <span>Huỷ</span>
+                <a-button class="me-0 me-sm-2 mb-3 mb-sm-0">
+                    <router-link to="/admin/users">
+                        <span>Huỷ</span>
+                    </router-link>
                 </a-button>
 
                 <a-button type="primary">
@@ -167,14 +171,41 @@ import {
 
     VerticalAlignTopOutlined
 } from '@ant-design/icons-vue';
-import {defineComponent} from 'vue';
+import axios from "axios";
+import {defineComponent , ref} from 'vue';
 export default defineComponent({
     components:{
-        VerticalAlignTopOutlined,
+        VerticalAlignTopOutlined, // componet6n antdesign vie
     },
     setup(){
         const store = useMenu(); // toàn bộ store nằm trong store/use-menu dùng để đồng bộ view giữa phone và decktop
         store.onSelectedKeys(['admin.users']);
+
+        const status_user = ref([]);
+        const departments = ref([]);
+        const filterOption = (input, option) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0; // search no bug , viết gợi y6s select
+};
+        const getUserCreate = ()=>{
+            axios.get("http://127.0.0.1:8000/api/users/create")
+            .then(function (response) {
+                console.log(response.data.users_status.original);
+                 departments.value = response.data.departments.original;
+                 status_user.value = response.data.users_status.original;
+
+              })
+           .catch(function (error) {
+    // handle error
+          console.log(error);
+         });
+        }
+        getUserCreate();
+        return {
+            departments,
+            status_user,
+            filterOption
+        }
     }
-})
+   
+});
 </script>
