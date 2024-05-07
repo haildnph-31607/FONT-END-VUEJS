@@ -1,4 +1,5 @@
 <template>
+ <form @submit.prevent="StoreUser()">
     <a-card title="Tạo Mới Tài Khoản" style="width:100%">
         <div class="row">
             <div class="col-12 col-sm-4">
@@ -37,6 +38,7 @@
                         :options="status_user"
                         allow-clear
                         :filter-option="filterOption"
+                        v-model:value="users_status"
                       
                       ></a-select>
                     </div>
@@ -55,7 +57,9 @@
                         <a-input
                        
                           placeholder="Tên Tài Khoản" 
-                          allow-clear />
+                          allow-clear
+                          v-model:value="username"
+                          />
                     </div>
                 </div>
                 
@@ -73,7 +77,9 @@
                         <a-input
                        
                           placeholder="Họ Và Tên" 
-                          allow-clear />
+                          allow-clear 
+                          v-model:value="name"
+                          />
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -89,7 +95,11 @@
                         <a-input
                        
                           placeholder="Email" 
-                          allow-clear />
+                          allow-clear 
+                          v-model:value="email"
+
+                          
+                          />
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -110,6 +120,8 @@
                         :options="departments"
                         allow-clear
                         :filter-option="filterOption"
+                        v-model:value="departments_id"
+
                       
                       ></a-select>
                     </div>
@@ -128,7 +140,10 @@
                         <a-input-password
                        
                           placeholder="Password" 
-                          allow-clear />
+                          allow-clear
+                          v-model:value="password"
+
+                           />
                     </div>
                 </div>
 
@@ -145,7 +160,10 @@
                         <a-input-password
                        
                           placeholder="Xác Nhận Password" 
-                          allow-clear />
+                          allow-clear
+                          v-model:value="password_confirmation"
+
+                           />
                     </div>
                 </div>
             </div>    `
@@ -158,12 +176,13 @@
                     </router-link>
                 </a-button>
 
-                <a-button type="primary">
+                <a-button type="primary" html-type="submit">
                     <span>Lưu</span>
                 </a-button>
             </div>
         </div>
     </a-card>
+ </form>
 </template>
 <script>
 import {useMenu} from "../../../stores/use-menu.js";// kho chưuas store
@@ -172,7 +191,7 @@ import {
     VerticalAlignTopOutlined
 } from '@ant-design/icons-vue';
 import axios from "axios";
-import {defineComponent , ref} from 'vue';
+import {defineComponent , ref ,reactive ,toRefs} from 'vue';
 export default defineComponent({
     components:{
         VerticalAlignTopOutlined, // componet6n antdesign vie
@@ -180,7 +199,25 @@ export default defineComponent({
     setup(){
         const store = useMenu(); // toàn bộ store nằm trong store/use-menu dùng để đồng bộ view giữa phone và decktop
         store.onSelectedKeys(['admin.users']);
+        const StoreUser = ()=>{   // hàm lấy dữ liệu form
+            axios.post('http://127.0.0.1:8000/api/users',ValueUsers)
+            .then((response)=>{
+                console.log(response);
+            }).catch((error)=>{
+                console.log(error);
+            })
 
+        }
+        const ValueUsers = reactive({
+            username:"",
+            name:"",
+            email:"",
+            password:"",
+            password_confirmation:"",
+            departments_id:[],
+            users_status:[],
+
+        })
         const status_user = ref([]);
         const departments = ref([]);
         const filterOption = (input, option) => {
@@ -203,7 +240,9 @@ export default defineComponent({
         return {
             departments,
             status_user,
-            filterOption
+            ...toRefs(ValueUsers),
+            filterOption,
+            StoreUser
         }
     }
    
