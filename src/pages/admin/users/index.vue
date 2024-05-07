@@ -1,5 +1,14 @@
 <template>
     <a-card title="Tài Khoản Người Dùng" style="width: 100%">
+       <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-end">
+            <a-button type="primary">
+                <router-link to="/admin/users/create">
+                    <PlusOutlined />
+                </router-link>
+            </a-button>
+        </div>
+       </div>
         <div class="row">
             <div class="col-12">
                 <a-table :dataSource="user" :columns="columns" :scroll="{ x: 576 }">  <!-- dataSourece là chứa dataa , colum để setup table -->
@@ -22,10 +31,17 @@
     </a-card>
 </template>
 <script>
+
 import {useMenu} from "../../../stores/use-menu.js";// kho chưuas store
 import { defineComponent , ref } from "vue";
+import {   
+
+PlusOutlined
+} from '@ant-design/icons-vue';
 export default defineComponent({
-    
+    components:{
+        PlusOutlined,
+    },
     setup(){
         const store = useMenu(); // toàn bộ store nằm trong store/use-menu dùng để đồng bộ view giữa phone và decktop
         store.onSelectedKeys(['admin.users']);
