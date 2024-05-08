@@ -25,7 +25,10 @@
                         <label>
                             <span class="text-danger me-1">*
                             </span>
-                            <span>Tình Trạng</span>
+                            <span :class="{
+                                'text-danger':errors.status_id
+                            }">Tình Trạng</span>
+                           
 
                         </label>
                     </div>
@@ -38,9 +41,15 @@
                         :options="status_user"
                         allow-clear
                         :filter-option="filterOption"
-                        v-model:value="users_status"
-                      
+                        v-model:value="status_id"
+                        :class="{
+                            'select-danger':errors.status_id
+                        }"
+                         
                       ></a-select>
+                      <div class="w-100"></div>
+                      <small class="text-danger" v-if="errors.status_id">{{ errors.status_id[0]}}</small>
+
                     </div>
                 </div>
 
@@ -49,7 +58,9 @@
                         <label>
                             <span class="text-danger me-1">*
                             </span>
-                            <span>Tên Tài Khoản</span>
+                            <span :class="{
+                                'text-danger':errors.username
+                            }">Tên Tài Khoản</span>
 
                         </label>
                     </div>
@@ -59,7 +70,13 @@
                           placeholder="Tên Tài Khoản" 
                           allow-clear
                           v-model:value="username"
+                          :class="{
+                            'select-danger':errors.username
+                        }"
                           />
+                          <div class="w-100"></div>
+                          <small class="text-danger" v-if="errors.username">{{ errors.username[0]}}</small>
+    
                     </div>
                 </div>
                 
@@ -69,7 +86,9 @@
                         <label>
                             <span class="text-danger me-1">*
                             </span>
-                            <span>Họ Và Tên</span>
+                            <span :class="{
+                                'text-danger':errors.name
+                            }">Họ Và Tên</span>
 
                         </label>
                     </div>
@@ -79,7 +98,13 @@
                           placeholder="Họ Và Tên" 
                           allow-clear 
                           v-model:value="name"
+                          :class="{
+                            'select-danger':errors.name
+                        }"
                           />
+                          <div class="w-100"></div>
+                          <small class="text-danger" v-if="errors.name">{{ errors.name[0]}}</small>
+    
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -87,7 +112,9 @@
                         <label>
                             <span class="text-danger me-1">*
                             </span>
-                            <span>Email</span>
+                            <span :class="{
+                                'text-danger':errors.email
+                            }">Email</span>
 
                         </label>
                     </div>
@@ -97,9 +124,14 @@
                           placeholder="Email" 
                           allow-clear 
                           v-model:value="email"
-
+                          :class="{
+                            'select-danger':errors.email
+                        }"
                           
                           />
+                          <div class="w-100"></div>
+                          <small class="text-danger" v-if="errors.email">{{ errors.email[0]}}</small>
+    
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -107,7 +139,9 @@
                         <label>
                             <span class="text-danger me-1">*
                             </span>
-                            <span>Phòng Ban</span>
+                            <span :class="{
+                                'text-danger':errors.departments_id
+                            }">Phòng Ban</span>
 
                         </label>
                     </div>
@@ -122,8 +156,13 @@
                         :filter-option="filterOption"
                         v-model:value="departments_id"
 
-                      
+                        :class="{
+                            'select-danger':errors.departments_id
+                        }"
                       ></a-select>
+                      <div class="w-100"></div>
+                      <small class="text-danger" v-if="errors.departments_id">{{ errors.departments_id[0]}}</small>
+
                     </div>
                 </div>
 
@@ -132,7 +171,9 @@
                         <label>
                             <span class="text-danger me-1">*
                             </span>
-                            <span>Password</span>
+                            <span :class="{
+                                'text-danger':errors.password
+                            }">Password</span>
 
                         </label>
                     </div>
@@ -142,8 +183,14 @@
                           placeholder="Password" 
                           allow-clear
                           v-model:value="password"
+                          :class="{
+                            'select-danger':errors.password
+                        }"
 
                            />
+                           <div class="w-100"></div>
+                           <small class="text-danger" v-if="errors.password">{{ errors.password[0]}}</small>
+     
                     </div>
                 </div>
 
@@ -152,7 +199,9 @@
                         <label>
                             <span class="text-danger me-1">*
                             </span>
-                            <span>Xác Nhận Password</span>
+                            <span :class="{
+                                'text-danger':errors.password
+                            }">Xác Nhận Password</span>
 
                         </label>
                     </div>
@@ -162,8 +211,13 @@
                           placeholder="Xác Nhận Password" 
                           allow-clear
                           v-model:value="password_confirmation"
-
+                          :class="{
+                            'select-danger':errors.password
+                        }"
                            />
+                           <div class="w-100"></div>
+                           <small class="text-danger" v-if="errors.password">{{ errors.password[0]}}</small>
+     
                     </div>
                 </div>
             </div>    `
@@ -205,6 +259,8 @@ export default defineComponent({
                 console.log(response);
             }).catch((error)=>{
                 console.log(error);
+                errors.value = error.response.data.errors;
+                console.log(errors);
             })
 
         }
@@ -215,9 +271,11 @@ export default defineComponent({
             password:"",
             password_confirmation:"",
             departments_id:[],
-            users_status:[],
+            status_id:[],
 
-        })
+        });
+        const errors = ref({});
+       
         const status_user = ref([]);
         const departments = ref([]);
         const filterOption = (input, option) => {
@@ -226,7 +284,7 @@ export default defineComponent({
         const getUserCreate = ()=>{
             axios.get("http://127.0.0.1:8000/api/users/create")
             .then(function (response) {
-                console.log(response.data.users_status.original);
+                // console.log(response.data.users_status.original);
                  departments.value = response.data.departments.original;
                  status_user.value = response.data.users_status.original;
 
@@ -242,9 +300,16 @@ export default defineComponent({
             status_user,
             ...toRefs(ValueUsers),
             filterOption,
+            errors,
             StoreUser
         }
     }
    
 });
 </script>
+<style>
+.select-danger{
+    border:1px solid red;
+}
+
+</style>
