@@ -245,6 +245,7 @@ import {
     VerticalAlignTopOutlined
 } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
+import { useRouter } from "vue-router";
 import axios from "axios";
 import {defineComponent , ref ,reactive ,toRefs} from 'vue';
 export default defineComponent({
@@ -254,16 +255,19 @@ export default defineComponent({
     setup(){
         const store = useMenu(); // toàn bộ store nằm trong store/use-menu dùng để đồng bộ view giữa phone và decktop
         store.onSelectedKeys(['admin.users']);
+        const router = useRouter(); // Tao bien luu function useRouter()
         const StoreUser = ()=>{   // hàm lấy dữ liệu form
             axios.post('http://127.0.0.1:8000/api/users',ValueUsers)
             .then((response)=>{
                 if(response.status == 200){
                     message.success('User added successfully');
-                    // location.href('admin/users')
+                    router.push('/admin/users');
                 }
             }).catch((error)=>{
                 console.log(error);
-                errors.value = error.response.data.errors;
+                if(error){
+                    errors.value = error.response.data.errors;
+                }
                 console.log(errors);
             })
 
