@@ -244,6 +244,7 @@ import {
 
     VerticalAlignTopOutlined
 } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
 import axios from "axios";
 import {defineComponent , ref ,reactive ,toRefs} from 'vue';
 export default defineComponent({
@@ -256,7 +257,10 @@ export default defineComponent({
         const StoreUser = ()=>{   // hàm lấy dữ liệu form
             axios.post('http://127.0.0.1:8000/api/users',ValueUsers)
             .then((response)=>{
-                console.log(response);
+                if(response.status == 200){
+                    message.success('User added successfully');
+                    // location.href('admin/users')
+                }
             }).catch((error)=>{
                 console.log(error);
                 errors.value = error.response.data.errors;
