@@ -8,6 +8,7 @@ window.axios = axios;
 import "../node_modules/bootstrap/dist/css/bootstrap-grid.min.css";
 import "../node_modules/bootstrap/dist/css/bootstrap-utilities.min.css";
 import {
+  Checkbox,
   Select,
   Input,
   Menu,
@@ -29,6 +30,7 @@ createApp(App)
   .use(router)
   .use(Input)
   .use(Avatar)
+  .use(Checkbox)
   .use(Select)
   .use(Card)
   .use(Table)
